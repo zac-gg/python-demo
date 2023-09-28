@@ -1,7 +1,7 @@
 import boto3
 
 # 创建 AppConfig 客户端
-appconfig = boto3.client('appconfig')
+appconfig = boto3.client('appconfig', region_name='ap-northeast-1')
 
 # 定义 AppConfig 资源的相关参数
 application = 'iblowy1'  # 您的应用程序 ID
