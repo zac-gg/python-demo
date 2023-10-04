@@ -5,16 +5,12 @@ FUTU_USDTHB_API = 'https://www.futunn.com/quote-api/quote-v2/get-stock-quote?sto
 FUTU_QUOTE_TOKEN = 'c0806e2152'
 
 
-async def getUSD2THBRate():
-    async with aiohttp.ClientSession() as session:
-
-        headers = {
-            "Quote-Token": FUTU_QUOTE_TOKEN
-        }
-        response = await session.get(FUTU_USDTHB_API, headers=headers)
-        response.raise_for_status()
-        jsonData = await response.json()
-
-        price = jsonData['data']['priceNominal']
-        print('Futu Price: {}'.format(price))
-        return price
+async def getUSD2THBRate(session):
+    headers = {
+        "Quote-Token": FUTU_QUOTE_TOKEN
+    }
+    response = await session.get(FUTU_USDTHB_API, headers=headers)
+    response.raise_for_status()
+    jsonData = await response.json()
+    price = jsonData['data']['priceNominal']
+    return price

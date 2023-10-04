@@ -1,52 +1,67 @@
-import multiprocessing
-import random
-import time
-from threading import current_thread
+import asyncio
+from asyncio import Future
 
 import reactivex
-from reactivex.scheduler import ThreadPoolScheduler
+from reactivex import Observable
 from reactivex import operators as ops
+from reactivex.scheduler.eventloop import AsyncIOScheduler
 
 
-def intense_calculation(value):
-    # sleep for a random short duration between 0.5 to 2.0 seconds to simulate a long-running calculation
-    time.sleep(random.randint(5, 20) * 0.1)
-    return value
+def to_async_iterable():
+    def _to_async_iterable(source: Observable):
+        class AIterable:
+            def __aiter__(self):
+                class AIterator:
+                    def __init__(self):
+                        self.notifications = []
+                        self.future = Future()
+
+                        source.pipe(ops.materialize()).subscribe(self.on_next)
+
+                    def feeder(self):
+                        if not self.notifications or self.future.done():
+                            return
+
+                        notification = self.notifications.pop(0)
+                        dispatch = {
+                            "N": lambda: self.future.set_result(notification.value),
+                            "E": lambda: self.future.set_exception(
+                                notification.exception
+                            ),
+                            "C": lambda: self.future.set_exception(StopAsyncIteration),
+                        }
+
+                        dispatch[notification.kind]()
+
+                    def on_next(self, notification):
+                        self.notifications.append(notification)
+                        self.feeder()
+
+                    async def __anext__(self):
+                        self.feeder()
+
+                        value = await self.future
+                        self.future = Future()
+                        return value
+
+                return AIterator()
+
+        return AIterable()
+
+    return _to_async_iterable
 
 
-# calculate number of CPUs, then create a ThreadPoolScheduler with that number of threads
-optimal_thread_count = multiprocessing.cpu_count()
-pool_scheduler = ThreadPoolScheduler(optimal_thread_count)
+async def go(loop):
+    scheduler = AsyncIOScheduler(loop)
 
-# Create Process 1
-reactivex.of("Alpha", "Beta", "Gamma", "Delta", "Epsilon").pipe(
-    ops.map(lambda s: intense_calculation(s)), ops.subscribe_on(pool_scheduler)
-).subscribe(
-    on_next=lambda s: print(
-        "PROCESS 1: {0} {1}".format(current_thread().name, s)),
-    on_error=lambda e: print(e),
-    on_completed=lambda: print("PROCESS 1 done!"),
-)
+    reactivex.interval(1, scheduler=scheduler).pipe(to_async_iterable())
+   
 
-# Create Process 2
-reactivex.range(1, 10).pipe(
-    ops.map(lambda s: intense_calculation(s)), ops.subscribe_on(pool_scheduler)
-).subscribe(
-    on_next=lambda i: print(
-        "PROCESS 2: {0} {1}".format(current_thread().name, i)),
-    on_error=lambda e: print(e),
-    on_completed=lambda: print("PROCESS 2 done!"),
-)
 
-# Create Process 3, which is infinite
-reactivex.interval(1).pipe(
-    ops.map(lambda i: i * 100),
-    ops.observe_on(pool_scheduler),
-    ops.map(lambda s: intense_calculation(s)),
-).subscribe(
-    on_next=lambda i: print(
-        "PROCESS 3: {0} {1}".format(current_thread().name, i)),
-    on_error=lambda e: print(e),
-)
+def main():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(go(loop))
 
-input("Press Enter key to exit\n")
+
+if __name__ == "__main__":
+    main()
