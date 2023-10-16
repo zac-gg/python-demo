@@ -47,7 +47,7 @@ class QueryOrder():
 			'merchantNo':cfg['config']['HMERCHANT_ID'],
 			'timeStamp': now,
 			'language' : 'en',
-			'buyingCurrency':"THB",
+			'buyingCurrency':"USD",
 			"sellingCurrency":"USD"
 		}
 		post_dict['sign'] = sign.decode('utf-8')
@@ -58,7 +58,7 @@ class QueryOrder():
 		dict = {
 			'merchantNo':cfg['config']['HMERCHANT_ID'],
 			'timeStamp': now,
-			'buyingCurrency':"THB",
+			'buyingCurrency':"USD",
 			"sellingCurrency":"USD"
 		}
 		return dict
