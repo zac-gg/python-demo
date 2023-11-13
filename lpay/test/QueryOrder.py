@@ -25,10 +25,10 @@ class QueryOrder():
 		#3.Sign data
 		cipher = RSACipher()
 		sign =  cipher.sign(cfg['config']['PRIVATE_KEY'],sign_data)
-		print(sign_data)
+		print(sign,'sign')
 		#4.AES encryption and URLEncode for specified characters
 		post_data = tool.url_encoder(self.__get_post_data(sign,now))
-		print(post_data)
+		print(post_data,'post data')
 		#5.Curl post request
 		res = tool.curl_post(api_url,post_data)
 		return res.status_code,res.text

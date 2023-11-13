@@ -40,7 +40,7 @@ class RSACipher():
         """
         private_key =  ''.join([private_key[i:i+64]+'\n' for i in range(0, len(private_key), 64)])
         private_key = "-----BEGIN RSA PRIVATE KEY-----\n"+private_key+"-----END RSA PRIVATE KEY-----\n"
-        print(private_key)
+        
         private_key = RSA.importKey(private_key)
         hash_value = MD5.new(text.encode('utf-8'))
         signer = PKCS1_v1_5.new(private_key)
