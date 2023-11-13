@@ -53,6 +53,7 @@ class QueryOrder():
 			"sellingCurrency":"HKD"
 		}
 		post_dict['sign'] = sign.decode('utf-8')
+		print(post_dict,'post_dict')
 		return post_dict
 
 	#Sign data
