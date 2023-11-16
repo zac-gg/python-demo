@@ -12,7 +12,7 @@ from library.RSACipher import RSACipher
 ini_file = "../config.ini"
 cfg = ConfigParser()
 cfg.read(ini_file)
-const.CREATE_ORDER_PARAMETER = '/nh-gateway/card/payment'
+const.CREATE_ORDER_PARAMETER = '/card/payment'
 
 
 class CreateOrder():
