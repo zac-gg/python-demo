@@ -3,10 +3,11 @@ import sys
 import time
 import json
 from configparser import ConfigParser
+sys.path.append("..")
 from library import const, tool, aes
 from urllib.parse import quote, unquote
 from library.RSACipher import RSACipher
-sys.path.append("..")
+
 
 ini_file = "../config.ini"
 cfg = ConfigParser()
