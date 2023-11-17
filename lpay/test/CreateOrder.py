@@ -2,11 +2,12 @@
 from library.RSACipher import RSACipher
 from urllib.parse import quote, unquote
 from library import const, tool, aes
+sys.path.append("..")
 import sys
 import time
 import json
 from configparser import ConfigParser
-sys.path.append("..")
+
 
 
 ini_file = "../config.ini"
