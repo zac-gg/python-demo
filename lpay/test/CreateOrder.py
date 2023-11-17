@@ -1,13 +1,12 @@
 
-from library.RSACipher import RSACipher
-from urllib.parse import quote, unquote
-from library import const, tool, aes
-sys.path.append("..")
 import sys
 import time
 import json
 from configparser import ConfigParser
-
+sys.path.append("..")
+from library import const, tool, aes
+from urllib.parse import quote, unquote
+from library.RSACipher import RSACipher
 
 
 ini_file = "../config.ini"
@@ -116,6 +115,7 @@ print(status_code, text)
 # status_code = 200
 # text = '{"meta":{"success":true,"code":"0000","message":"Request Success"},"data":{"merchantNo":"XP00824","merchantOrderNo":"1626345205008","orderNo":"XP01OC0210720172527092760313946","currency":"USD","orderAmount":1000,"orderFee":440,"payModel":"CREDIT_CARD","orderStatus":"SUCCESS","webUrl":null,"page":null,"orderTime":1626744327139,"finishTime":1626744327402,"sign":"V5wgzKfpAZotmz51gR5Oy/irxqOtIjfMQJVs8F5p4sF74Cu7k6lOYmcOF4AAjkQek8hNjbzN5zcN1nKi6HLjaGUQFEYTm3i+plftlCgL9j52LYre6GgX25FHZmX+02dS4b119LIzDDAODHerG+I+MW1hmpRRFYELjrgKPCI+u7lFcjijE3Zk86fMFQW4AqX0tvA44k2KhhOa30EVcC/l2mEsWGUqXWsZGnEs1aP2J/0CtxEl6KUnttnMIP5FsWkUq2i7WvFWDfUkDurBnde4HoKVeusnta4W/3JiWpbw9Ks3yQne7FMoQoOghoFqNsW7mPK6quZEfrlDLGAHd63T6g==","remark":""}}'
 t.checkSign(status_code, text)
+
 
 print(aes.get_sha1prng_key(cfg['config']['AES_KEY']))
 print(aes.encrypt(aes.get_sha1prng_key(cfg['config']['AES_KEY']), '355'))
