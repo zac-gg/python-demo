@@ -14,6 +14,9 @@ import base64
 
 BS = AES.block_size
 
+
+print(BS,'BS')
+
 def padding_pkcs5(value):
     return str.encode(value + (BS - len(value) % BS) * chr(BS - len(value) % BS))
 
