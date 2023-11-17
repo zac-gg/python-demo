@@ -52,7 +52,7 @@ class CreateOrder():
             'merchantNo': cfg['config']['HMERCHANT_ID'],
             'timeStamp': now,
             'language': 'en',
-            'merchantOrderNo': '1626345205009',
+            'merchantOrderNo': now,
             'payModel': 'CREDIT_CARD',
             'currency': 'USD',
             'orderAmount': '1000',
@@ -87,7 +87,7 @@ class CreateOrder():
         dict = {
             'merchantNo': cfg['config']['HMERCHANT_ID'],
             'timeStamp': now,
-            'merchantOrderNo': '1626345205009',
+            'merchantOrderNo': now,
             'payModel': 'CREDIT_CARD',
             'currency': 'USD',
             'orderAmount': '1000',
@@ -117,5 +117,3 @@ print(status_code, text)
 t.checkSign(status_code, text)
 
 
-print(aes.get_sha1prng_key(cfg['config']['AES_KEY']).decode('utf-8'))
-print(aes.encrypt(aes.get_sha1prng_key(cfg['config']['AES_KEY']), '355'))
