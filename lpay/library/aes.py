@@ -22,6 +22,7 @@ def padding_pkcs5(value):
 
 # Convert decimal to hexadecimal
 def get_sha1prng_key(key):
+    print(key,'key')
     signature = hashlib.sha1(key.encode()).digest()
     signature = hashlib.sha1(signature).digest()
     return ''.join(['%02x' % i for i in signature]).upper()[:32]

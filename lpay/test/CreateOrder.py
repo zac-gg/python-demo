@@ -117,5 +117,5 @@ print(status_code, text)
 t.checkSign(status_code, text)
 
 
-print(aes.get_sha1prng_key(cfg['config']['AES_KEY']))
+print(aes.get_sha1prng_key(cfg['config']['AES_KEY']).decode('utf-8'))
 print(aes.encrypt(aes.get_sha1prng_key(cfg['config']['AES_KEY']), '355'))
